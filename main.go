@@ -7,10 +7,10 @@ import (
 	"github.com/labstack/gommon/log"
 	authHandler "login-service/auth/delivery/http"
 	authService "login-service/auth/usecase"
+	"login-service/infrastructure/database"
 	jwtMiddleware "login-service/middleware"
 	userHandler "login-service/user/delivery/http"
 	userService "login-service/user/usecase"
-	"login-service/infrastructure/database"
 	"os"
 	"path/filepath"
 )
@@ -45,7 +45,6 @@ func main() {
 	auth := v1.Group("/auth")
 	auth.POST("/token", authController.Login)
 	auth.POST("/register", authController.Register)
-	auth.POST("/refresh-token", authController.RefreshToken)
 
 	//UserController
 	userController := userHandler.NewUserController(userService.NewUserService(db))
@@ -55,5 +54,3 @@ func main() {
 	e.Logger.Fatal(e.Start(os.Getenv("APP_PORT")))
 
 }
-
-
